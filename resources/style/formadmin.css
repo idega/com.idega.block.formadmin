@@ -1,0 +1,31 @@
+.button_formadmin {
+	margin: 5px;
+	padding: 1px;
+	display: block;
+}
+
+.label_formadmin {
+	margin: 0px;
+	padding: 1px;
+	display: block;
+}
+
+.sp_table_formadmin {
+	background-color: white;
+	width: 200px;
+	margin: 0px;
+	padding: 1px;
+	display: block;
+	border-width: 1px;
+	border-color: black;
+	border-style: outset;
+}
+
+.sp_table_formadmin td {
+	
+	border-style: inset;
+	border-width: 1px;
+	border-color: black;
+	padding-right: 5px;
+	padding-left: 5px;
+}

@@ -12,11 +12,8 @@ import javax.faces.context.FacesContext;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.component.html.ext.HtmlInputHidden;
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
-import org.apache.myfaces.custom.htmlTag.HtmlTag;
 
 import com.idega.block.formadmin.presentation.FormViewerBlock;
-
-import quicktime.std.qtcomponents.SCInfo;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
@@ -68,6 +65,8 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		for (Iterator iter = parent_children.iterator(); iter.hasNext();) {
 			Object element = iter.next();
 			
+//			TODO: don't do this like this, just use some container tag, to contain this table component
+//			and those 2 helper components
 			if(element instanceof RowStateKeeper || element instanceof ScriptKeeper) {
 			
 				iter.remove();
@@ -225,6 +224,7 @@ public class GridHtmlDataTable extends HtmlDataTable {
 	public void setColumnsPropertiesNames(List<String> properties_names) {
 
 		List table_children = getChildren();
+		table_children.clear();
 		Application app = FacesContext.getCurrentInstance().getApplication();
 		
 		HtmlSimpleColumn col = new HtmlSimpleColumn();
@@ -240,26 +240,29 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		
 		table_children.add(col);
 		
-		String att_name = "value";
-		
-		for (Iterator<String> iter = properties_names.iterator(); iter.hasNext();) {
+		if(properties_names != null) {
 			
-			String prop_name = iter.next();
+			String att_name = "value";
 			
-			col = new HtmlSimpleColumn();
-			col.setRendered(true);
-			
-			HtmlOutputText col_label = new HtmlOutputText();
-			
-			String val_binding_exp = new StringBuffer("#{forms_iterator.")
-			.append(prop_name)
-			.append("}")
-			.toString();
-			
-			col_label.setValueBinding(att_name, app.createValueBinding(val_binding_exp));
-			col_label.setRendered(true);
-			col.getChildren().add(col_label);
-			table_children.add(col);
+			for (Iterator<String> iter = properties_names.iterator(); iter.hasNext();) {
+				
+				String prop_name = iter.next();
+				
+				col = new HtmlSimpleColumn();
+				col.setRendered(true);
+				
+				HtmlOutputText col_label = new HtmlOutputText();
+				
+				String val_binding_exp = new StringBuffer("#{forms_iterator.")
+				.append(prop_name)
+				.append("}")
+				.toString();
+				
+				col_label.setValueBinding(att_name, app.createValueBinding(val_binding_exp));
+				col_label.setRendered(true);
+				col.getChildren().add(col_label);
+				table_children.add(col);
+			}
 		}
 		
 		col = new HtmlSimpleColumn();

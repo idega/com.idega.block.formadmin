@@ -13,13 +13,13 @@ import com.idega.block.formadmin.presentation.FormViewerBlock;
  * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
  * @version 1.0
  */
-public class ViewAvailableFormsAction implements ActionListener, IPhaseValueProvider {
+public class ViewSubmittedDataListAction implements ActionListener, IPhaseValueProvider {
 	public void processAction(ActionEvent ae) {
 		
 		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		
-		session_map.put(FormViewerBlock.PHASE, FormViewerBlock.PHASE1);
-		session_map.remove(FormViewerBlock.CURRENTLY_VIEWED_FORMID);
+		session_map.put(FormViewerBlock.PHASE, FormViewerBlock.PHASE2);
+		session_map.put(FormViewerBlock.CURRENTLY_VIEWED_FORMID, session_map.get(FormViewerBlock.SELECTED_ROWID));
 		session_map.remove(FormViewerBlock.SELECTED_ROWID);
 	}
 	
@@ -29,6 +29,6 @@ public class ViewAvailableFormsAction implements ActionListener, IPhaseValueProv
 	
 	public String getButtonValue() {
 		
-		return "View available forms";
+		return "View submitted data list";
 	}
 }

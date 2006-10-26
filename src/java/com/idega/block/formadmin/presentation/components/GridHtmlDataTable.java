@@ -158,13 +158,6 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		parent_children.add(selected_row_state_keeper);
 		selected_row_key = selected_row_state_keeper.getClientId(ctx);
 		
-		StringBuffer on_click;
-		
-		if(getRowOnClick() != null)
-			on_click = new StringBuffer(getRowOnClick());
-		else
-			on_click = new StringBuffer();
-		
 //		js code below ----	
 		
 //		if(!window.selected_row || this != selected_row) {
@@ -183,7 +176,7 @@ public class GridHtmlDataTable extends HtmlDataTable {
 //      	}
 //		}
 		
-		on_click
+		String on_click = new StringBuffer()
 		.append(" if(!window.")
 		.append(selected_row_variable)
 		.append(" || this != ")
@@ -209,9 +202,10 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		.append(" = this; GridHtmlDataTable_prev_color = '")
 		.append(row_selected_color)
 		.append("';")
-		.append("} }");
+		.append("} }")
+		.toString();
 		
-		setRowOnClick(on_click.toString());
+		setRowOnClick(on_click);
 	}
 	
 	@Override

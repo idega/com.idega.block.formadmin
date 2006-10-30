@@ -14,6 +14,11 @@
 	<tag>
 		<name>FormViewer</name>
 		<tag-class>com.idega.block.formadmin.presentation.tags.FormViewerBlockTag</tag-class>
+		<attribute>
+			<name>rendered</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
 	</tag>
 	
 </taglib>

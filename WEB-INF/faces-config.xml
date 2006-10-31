@@ -6,7 +6,7 @@
 
 <faces-config>
 	<component>
-		<component-type>FormViewer</component-type>
+		<component-type>FormAdmin</component-type>
 		<component-class>com.idega.block.formadmin.presentation.FormViewerBlock</component-class>
 	</component>
 	

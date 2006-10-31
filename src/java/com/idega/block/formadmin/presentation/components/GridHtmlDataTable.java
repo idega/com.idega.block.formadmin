@@ -16,6 +16,8 @@ import org.apache.myfaces.custom.column.HtmlSimpleColumn;
 import com.idega.block.formadmin.presentation.FormViewerBlock;
 
 /**
+ * <i>WARNING!</i> This component should reside in container tag as the only child.
+ * 
  * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
  * @version 1.0
  */

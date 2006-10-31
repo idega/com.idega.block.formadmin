@@ -21,6 +21,7 @@ public class ViewSubmittedDataListAction implements ActionListener, IPhaseValueP
 		session_map.put(FormViewerBlock.PHASE, FormViewerBlock.PHASE2);
 		session_map.put(FormViewerBlock.CURRENTLY_VIEWED_FORMID, session_map.get(FormViewerBlock.SELECTED_ROWID));
 		session_map.remove(FormViewerBlock.SELECTED_ROWID);
+		session_map.remove(FormViewerBlock.CURRENTLY_VIEWED_SUBMITTED_DATA_IDENTIFIER);
 	}
 	
 	public List getGridTableValues() { 

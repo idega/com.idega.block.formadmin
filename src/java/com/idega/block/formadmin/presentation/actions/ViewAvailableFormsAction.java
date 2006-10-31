@@ -19,8 +19,8 @@ public class ViewAvailableFormsAction implements ActionListener, IPhaseValueProv
 		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		
 		session_map.put(FormViewerBlock.PHASE, FormViewerBlock.PHASE1);
-		session_map.remove(FormViewerBlock.CURRENTLY_VIEWED_FORMID);
-		session_map.remove(FormViewerBlock.SELECTED_ROWID);
+		session_map.put(FormViewerBlock.SELECTED_ROWID, session_map.get(FormViewerBlock.CURRENTLY_VIEWED_FORMID));
+		session_map.remove(FormViewerBlock.CURRENTLY_VIEWED_SUBMITTED_DATA_IDENTIFIER);
 	}
 	
 	public List getGridTableValues() { 

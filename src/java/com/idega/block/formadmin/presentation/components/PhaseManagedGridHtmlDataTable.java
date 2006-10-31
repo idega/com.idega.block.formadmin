@@ -22,6 +22,4 @@ public class PhaseManagedGridHtmlDataTable extends GridHtmlDataTable {
 		
 		super.encodeBegin(ctx);
 	}
-	
-	
 }

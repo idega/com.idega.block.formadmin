@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
@@ -26,10 +25,8 @@ public class GetAvailableFormsAction implements ActionListener, IPhaseValueProvi
 	
 	public static final String COLUMNID_FORM_NAME = "form_name";
 	private static final String COLUMNID_ID = "id";
-	public static final String AVAILABLE_FORMS = "com.idega.block.formadmin.presentation.actions.GetAvailableFormsAction.AVAILABLE_FORMS";
-	public static final String AVAILABLE_FORMS_COLUMNS_PROPERTIES = "com.idega.block.formadmin.presentation.actions.GetAvailableFormsAction.AVAILABLE_FORMS_COLUMNS_PROPERTIES";
 	
-	public void getAvailableForms() {
+	public List getAvailableForms() {
 		
 		FormListViewer viewer = new FormListViewer();
 		
@@ -45,15 +42,26 @@ public class GetAvailableFormsAction implements ActionListener, IPhaseValueProvi
 				
 				FormBean bean = iter.next();
 				
-				form_name.put(COLUMNID_ID, bean.getResourcePath());
+//				TODO: change there when getId will be there
+				String resource_path = bean.getResourcePath();
+				
+				if(resource_path.contains("/")) {
+					resource_path = resource_path.substring(resource_path.lastIndexOf('/')+1);
+				}
+				if(resource_path.contains(".")) {
+					resource_path = resource_path.substring(0, resource_path.lastIndexOf('.'));
+				}
+				
+				form_name.put(COLUMNID_ID, resource_path);
 				form_name.put(COLUMNID_FORM_NAME, bean.getName());
 				
 				forms_names.add(form_name);
 			}
 			
-			Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-			session_map.put(AVAILABLE_FORMS, forms_names);
+			return forms_names;
 		}
+		
+		return null;
 	}
 	
 	public static void initiateTableColumnsProperties(Map session_map) {
@@ -66,14 +74,7 @@ public class GetAvailableFormsAction implements ActionListener, IPhaseValueProvi
 	
 	public List getGridTableValues() {
 
-		getAvailableForms();
-		
-		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-		
-		List available_forms = 
-			(List)session_map.get(AVAILABLE_FORMS);
-		
-		return available_forms;
+		return getAvailableForms();
 	}
 	
 	public String getButtonValue() {

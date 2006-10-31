@@ -1,7 +1,6 @@
 package com.idega.block.formadmin.presentation.actions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import com.idega.block.formadmin.presentation.FormViewerBlock;
 import com.idega.block.formadmin.presentation.components.PhaseManagedGridHtmlDataTable;
+import com.idega.block.formreader.business.SubmittedDataReader;
+import com.idega.block.formreader.business.beans.SubmittedDataBean;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
@@ -19,31 +21,40 @@ public class ViewAllSubmittedDataAction implements ActionListener, IPhaseValuePr
 	
 	public void processAction(ActionEvent ae) {
 		
+		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+		
+		session_map.put(FormViewerBlock.CURRENTLY_VIEWED_SUBMITTED_DATA_IDENTIFIER, session_map.get(FormViewerBlock.SELECTED_ROWID));
 	}
 	
 	public static final String COLUMNID_LABEL1 = "label1";
 	public static final String COLUMNID_LABEL2 = "label2";
-	private static final String COLUMNID_ID = "id";
 	public static final String SUBMITTED_DATA = "com.idega.block.formadmin.presentation.actions.ViewAllSubmittedDataAction.SUBMITTED_DATA";
 	public static final String SUBMITTED_DATA_COLUMNS_PROPERTIES = "com.idega.block.formadmin.presentation.actions.ViewAllSubmittedDataAction.SUBMITTED_DATA_COLUMNS_PROPERTIES";
 	
-	public void getAllSubmittedData() {
-		
-		List<Map> submitted_data_names = new ArrayList<Map>();
-		
-		for (int i = 0; i < 10; i++) {
-			
-			Map<String, String> submitted_data = new HashMap<String, String>();
-			
-			submitted_data.put(COLUMNID_ID, i+"_");
-			submitted_data.put(COLUMNID_LABEL1, "label "+i);
-			submitted_data.put(COLUMNID_LABEL2, "label2 "+i);
-			
-			submitted_data_names.add(submitted_data);
-		}
+	public List getAllSubmittedData() {
 		
 		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-		session_map.put(SUBMITTED_DATA, submitted_data_names);
+		String current_formid = (String)session_map.get(FormViewerBlock.CURRENTLY_VIEWED_FORMID);
+		
+		List submitted_data_names;
+		
+		if(current_formid != null) {
+			
+			try {
+				
+				SubmittedDataReader data_reader = SubmittedDataReader.getInstance();
+				data_reader.setFormIdentifier(current_formid);
+				
+				List<SubmittedDataBean> submitted_data = data_reader.getFormAllSubmittedData();
+				submitted_data_names = submitted_data;
+				
+			} catch (Exception e) {
+				submitted_data_names = new ArrayList();
+			}
+		} else
+			submitted_data_names = new ArrayList();
+		
+		return submitted_data_names;
 	}
 	
 	public static void initiateTableColumnsProperties(Map session_map) {
@@ -57,18 +68,12 @@ public class ViewAllSubmittedDataAction implements ActionListener, IPhaseValuePr
 	
 	public List getGridTableValues() {
 		
-		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-		
-		getAllSubmittedData();
-		
-		List submitted_data = 
-			(List)session_map.get(SUBMITTED_DATA);
-		
-		return submitted_data;
+		return getAllSubmittedData();
 	}
 	
 	public String getButtonValue() {
 		
 		return "View all submitted data";
 	}
+	
 }

@@ -176,6 +176,27 @@ public class PhaseManagedBean {
 			
 			ViewAllSubmittedDataAction.initiateTableColumnsProperties(session_map);
 		}
+	}
+	
+	public boolean isFormReaderRendered() {
 		
+		Map session_map = getSessionMap();
+		String phase = (String)session_map.get(PHASE);
+		
+		if(phase != null && phase.equals(PHASE2))
+			
+			return true;
+		
+		return false;
+	}
+	
+	public String getSelectedFormIdentifier() {
+		
+		return (String)getSessionMap().get(FormViewerBlock.CURRENTLY_VIEWED_FORMID);
+	}
+	
+	public String getSelectedSubmittedDataIdentifier() {
+		
+		return (String)getSessionMap().get(FormViewerBlock.CURRENTLY_VIEWED_SUBMITTED_DATA_IDENTIFIER);
 	}
 }

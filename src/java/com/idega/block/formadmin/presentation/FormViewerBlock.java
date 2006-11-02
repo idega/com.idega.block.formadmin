@@ -46,7 +46,10 @@ public class FormViewerBlock extends WFBlock {
 	@Override
 	public void initializeComponent(FacesContext ctx) {
 		
-		ctx.getExternalContext().getSessionMap().put(PHASE, PHASE1);
+		Map session_map = ctx.getExternalContext().getSessionMap();
+		
+		if(session_map.get(PHASE) == null)
+			session_map.put(PHASE, PHASE1);
 		
 		Application app = ctx.getApplication();
 		

@@ -27,41 +27,28 @@ public class GetAvailableFormsAction implements ActionListener, IPhaseValueProvi
 	private static final String COLUMNID_ID = "id";
 	
 	public List getAvailableForms() {
+	
+		List<Map> forms_names = new ArrayList<Map>();
 		
 		FormListViewer viewer = new FormListViewer();
 		
 		List<FormBean> form_beans = viewer.getForms();
-		
+			
 		if(form_beans != null) {
-			
-			List<Map> forms_names = new ArrayList<Map>();
-			
 			for (Iterator<FormBean> iter = form_beans.iterator(); iter.hasNext();) {
 				
 				Map<String, String> form_name = new HashMap<String, String>();
 				
 				FormBean bean = iter.next();
 				
-//				TODO: change there when getId will be there
-				String resource_path = bean.getResourcePath();
-				
-				if(resource_path.contains("/")) {
-					resource_path = resource_path.substring(resource_path.lastIndexOf('/')+1);
-				}
-				if(resource_path.contains(".")) {
-					resource_path = resource_path.substring(0, resource_path.lastIndexOf('.'));
-				}
-				
-				form_name.put(COLUMNID_ID, resource_path);
+				form_name.put(COLUMNID_ID, bean.getFormId());
 				form_name.put(COLUMNID_FORM_NAME, bean.getName());
 				
 				forms_names.add(form_name);
 			}
-			
-			return forms_names;
 		}
 		
-		return null;
+		return forms_names;
 	}
 	
 	public static void initiateTableColumnsProperties(Map session_map) {

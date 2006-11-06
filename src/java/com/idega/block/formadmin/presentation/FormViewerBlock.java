@@ -19,6 +19,7 @@ import com.idega.block.formadmin.presentation.components.PhaseManagedGridHtmlDat
 import com.idega.block.formreader.presentation.FormReaderBlock;
 import com.idega.webface.WFBlock;
 import com.idega.webface.WFContainer;
+import com.idega.webface.WFToolbar;
 
 
 /**
@@ -95,12 +96,16 @@ public class FormViewerBlock extends WFBlock {
 		form_reader.setValueBinding(FormReaderBlock.form_identifier, app.createValueBinding("#{phaseManagedBean.selectedFormIdentifier}"));
 		form_reader.setValueBinding(FormReaderBlock.submitted_data_identifier, app.createValueBinding("#{phaseManagedBean.selectedSubmittedDataIdentifier}"));
 		
+		WFToolbar wf_toolbar = new WFToolbar();
+//		wf_toolbar.setStyleClass("content_item_toolbar");
+		wf_toolbar.addButton(button1);
+		wf_toolbar.addButton(button2);
+		wf_toolbar.addButton(button3);
+		
 		List<UIComponent> form_children = form.getChildren();
-		form_children.add(button1);
-		form_children.add(button2);
+		form_children.add(wf_toolbar);
 		form_children.add(label);
 		form_children.add(grid_table);
-		form_children.add(button3);
 		
 		WFContainer form_container = new WFContainer();
 		form_container.getChildren().add(form);
@@ -115,7 +120,7 @@ public class FormViewerBlock extends WFBlock {
 	public static final String SELECTED_ROWID = "com.idega.block.formadmin.presentation.FormViewerBlock.SELECTED_ROWID";
 	public static final String CURRENTLY_VIEWED_FORMID = "com.idega.block.formadmin.presentation.FormViewerBlock.CURRENTLY_VIEWED_FORMID";
 	public static final String CURRENTLY_VIEWED_SUBMITTED_DATA_IDENTIFIER = "com.idega.block.formadmin.presentation.FormViewerBlock.CURRENTLY_VIEWED_SUBMITTED_DATA_IDENTIFIER";
-	private static final int GRID_TABLE = 3;
+	private static final int GRID_TABLE = 2;
 	
 	public static final String PHASE = "com.idega.block.formadmin.presentation.FormViewerBlock.phase";
 	public static final String PHASE1 = "com.idega.block.formadmin.presentation.FormViewerBlock.phase1";

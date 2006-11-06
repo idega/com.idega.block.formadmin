@@ -97,7 +97,6 @@ public class FormViewerBlock extends WFBlock {
 		form_reader.setValueBinding(FormReaderBlock.submitted_data_identifier, app.createValueBinding("#{phaseManagedBean.selectedSubmittedDataIdentifier}"));
 		
 		WFToolbar wf_toolbar = new WFToolbar();
-//		wf_toolbar.setStyleClass("content_item_toolbar");
 		wf_toolbar.addButton(button1);
 		wf_toolbar.addButton(button2);
 		wf_toolbar.addButton(button3);

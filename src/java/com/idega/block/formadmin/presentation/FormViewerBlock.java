@@ -47,6 +47,8 @@ public class FormViewerBlock extends WFBlock {
 	@Override
 	public void initializeComponent(FacesContext ctx) {
 		
+		setMainAreaStyleClass(null);
+		
 		Map session_map = ctx.getExternalContext().getSessionMap();
 		
 		if(session_map.get(PHASE) == null)
@@ -86,7 +88,9 @@ public class FormViewerBlock extends WFBlock {
 		PhaseManagedGridHtmlDataTable grid_table = new PhaseManagedGridHtmlDataTable();
 		grid_table.setRendered(true);
 		grid_table.setStyleClass(table_style_class);
-		grid_table.setRowChangeColor("#72C0FE");
+//		grid_table.setRowChangeColor("#72C0FE");
+		grid_table.setRowChangeColor("#F3F7F6");
+		grid_table.setRowSelectedColor("#F3F7F6");
 		grid_table.setId(table_id);
 		grid_table.setValueBinding(value_att, app.createValueBinding("#{phaseManagedBean.gridTableValuesProvider.gridTableValues}"));
 		PhaseManagedBean.initiateTableColumns();

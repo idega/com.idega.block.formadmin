@@ -14,6 +14,7 @@ import org.apache.myfaces.component.html.ext.HtmlInputHidden;
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
 
 import com.idega.block.formadmin.presentation.FormViewerBlock;
+import com.idega.webface.WFContainer;
 
 /**
  * <i>WARNING!</i> This component should reside in container tag as the only child.
@@ -23,7 +24,7 @@ import com.idega.block.formadmin.presentation.FormViewerBlock;
  */
 public class GridHtmlDataTable extends HtmlDataTable {
 	
-	private String row_selected_color = "#89EEFE";
+	private String row_selected_color = "#E8E8E8";
 	private String selected_row_key;
 	private String selected_row_id;
 	
@@ -222,7 +223,6 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		List table_children = getChildren();
 		table_children.clear();
 		Application app = FacesContext.getCurrentInstance().getApplication();
-		
 		HtmlSimpleColumn col = new HtmlSimpleColumn();
 		col.setRendered(true);
 		col.setStyle("display: none;");
@@ -233,7 +233,6 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		current_row_id_keeper.setRendered(true);
 		
 		col.getChildren().add(current_row_id_keeper);
-		
 		table_children.add(col);
 		
 		if(properties_names != null) {
@@ -247,7 +246,12 @@ public class GridHtmlDataTable extends HtmlDataTable {
 				col = new HtmlSimpleColumn();
 				col.setRendered(true);
 				
+				
 				HtmlOutputText col_label = new HtmlOutputText();
+				
+				WFContainer container = new WFContainer();
+				container.getChildren().add(col_label);
+				container.setStyleClass("grid_value_container");
 				
 				String val_binding_exp = new StringBuffer("#{forms_iterator.")
 				.append(prop_name)
@@ -256,14 +260,14 @@ public class GridHtmlDataTable extends HtmlDataTable {
 				
 				col_label.setValueBinding(att_name, app.createValueBinding(val_binding_exp));
 				col_label.setRendered(true);
-				col.getChildren().add(col_label);
+				col.getChildren().add(container);
 				table_children.add(col);
 			}
 		}
 		
 		col = new HtmlSimpleColumn();
 		col.setRendered(true);
-		col.setStyle("display: none;");
+		col.setStyle("width: 100%;");
 		
 		table_children.add(col);
 		

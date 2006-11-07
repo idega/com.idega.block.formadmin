@@ -49,6 +49,8 @@ public class FormViewerBlock extends WFBlock {
 		
 		setMainAreaStyleClass(null);
 		
+		setStyleClass(getStyleClass()+(" form_viewer_block"+FORM_ADMIN_STYLE_CLASS_ID));
+		
 		Map session_map = ctx.getExternalContext().getSessionMap();
 		
 		if(session_map.get(PHASE) == null)

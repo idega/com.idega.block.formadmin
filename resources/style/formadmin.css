@@ -33,3 +33,8 @@
 .grid_value_container {
 	width: 150px;
 }
+
+.form_viewer_block_formadmin {
+	overflow: auto;
+	max-height: 500px;
+}

@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.component.html.ext.HtmlInputHidden;
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
+import org.apache.myfaces.custom.htmlTag.HtmlTag;
 
 import com.idega.block.formadmin.presentation.FormViewerBlock;
 import com.idega.webface.WFContainer;
@@ -63,17 +64,17 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		selected_row_id = row_id;
 	}
 	
-	private void removeHelperTags(Map session_map, List parent_children) {
+	private void removeHelperTags(List parent_children) {
 		
-		for (Iterator iter = parent_children.iterator(); iter.hasNext();) {
-			Object element = iter.next();
-			
-//			TODO: don't do this like this, just use some container tag, to contain this table component
-//			and those 2 helper components
-			if(element instanceof RowStateKeeper || element instanceof ScriptKeeper) {
-			
-				iter.remove();
-			}
+		if(parent_children.size() < 2)
+			return;
+		
+		Iterator iter = parent_children.iterator();
+		iter.next();
+		
+		for (; iter.hasNext();) {
+			iter.next();
+			iter.remove();
 		}
 	}
 	
@@ -81,7 +82,7 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		
 		String grid_client_id = getClientId(ctx);
 		
-		RowStateKeeper selected_row_state_keeper = new RowStateKeeper();
+		HtmlInputHidden selected_row_state_keeper = new HtmlInputHidden();
 		
 		selected_row_state_keeper.setId(getId()+"_selected_row");
 		selected_row_state_keeper.setRendered(true);
@@ -89,15 +90,16 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		String selected_row_variable = grid_client_id.replaceAll(":", "_")+"_selected_row";
 		
 		Map session_map = ctx.getExternalContext().getSessionMap();
+		
 		List parent_children = getParent().getChildren();
 		
-		removeHelperTags(session_map, parent_children);
+		removeHelperTags(parent_children);
 		
 		selected_row_id = (String)session_map.get(FormViewerBlock.SELECTED_ROWID);
 		
 		if(selected_row_id != null) {
 			
-			ScriptKeeper script_tag = new ScriptKeeper();
+			HtmlTag script_tag = new HtmlTag();
 			script_tag.setValue("script");
 			
 			HtmlOutputText script_text = new HtmlOutputText();
@@ -213,9 +215,14 @@ public class GridHtmlDataTable extends HtmlDataTable {
 	
 	@Override
 	public void encodeBegin(FacesContext ctx) throws IOException {
-		
 		initRows(ctx);
 		super.encodeBegin(ctx);
+	}
+	
+	@Override
+	public void encodeEnd(FacesContext ctx) throws IOException {
+		// TODO Auto-generated method stub
+		super.encodeEnd(ctx);
 	}
 	
 	public void setColumnsPropertiesNames(List<String> properties_names) {

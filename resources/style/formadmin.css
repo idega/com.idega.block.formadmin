@@ -19,9 +19,6 @@
 	margin: 0px;
 	padding: 0px;
 	display: block;
-	height: 200px;
-	overflow: auto;
-
 }
 
 .sp_table_formadmin td {
@@ -37,4 +34,9 @@
 .form_viewer_block_formadmin {
 	overflow: auto;
 	max-height: 500px;
+}
+
+.table_container_formadmin {
+	overflow: auto;
+	height: 200px;
 }

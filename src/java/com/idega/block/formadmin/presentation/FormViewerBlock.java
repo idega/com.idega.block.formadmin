@@ -97,6 +97,10 @@ public class FormViewerBlock extends WFBlock {
 		grid_table.setValueBinding(value_att, app.createValueBinding("#{phaseManagedBean.gridTableValuesProvider.gridTableValues}"));
 		PhaseManagedBean.initiateTableColumns();
 		
+		WFContainer table_container = new WFContainer();
+		table_container.getChildren().add(grid_table);
+		table_container.setStyleClass("table_container"+FORM_ADMIN_STYLE_CLASS_ID);
+		
 		FormReaderBlock form_reader = new FormReaderBlock();
 		form_reader.setValueBinding(rendered_att, app.createValueBinding("#{phaseManagedBean.formReaderRendered}"));
 		form_reader.setValueBinding(FormReaderBlock.form_identifier, app.createValueBinding("#{phaseManagedBean.selectedFormIdentifier}"));
@@ -110,7 +114,7 @@ public class FormViewerBlock extends WFBlock {
 		List<UIComponent> form_children = form.getChildren();
 		form_children.add(wf_toolbar);
 		form_children.add(label);
-		form_children.add(grid_table);
+		form_children.add(table_container);
 		
 		WFContainer form_container = new WFContainer();
 		form_container.getChildren().add(form);
@@ -150,7 +154,7 @@ public class FormViewerBlock extends WFBlock {
 		Map session_map = ctx.getExternalContext().getSessionMap();
 		List form_children = ((HtmlForm)getFacet(FORM_CONTAINER).getChildren().get(0)).getChildren();
 		
-		GridHtmlDataTable grid_table = (GridHtmlDataTable)form_children.get(GRID_TABLE);
+		GridHtmlDataTable grid_table = (GridHtmlDataTable)((UIComponent)form_children.get(GRID_TABLE)).getChildren().get(0);
 		String selected_row_id = grid_table.getSelectedRowId(ctx);
 		
 		if(selected_row_id != null)

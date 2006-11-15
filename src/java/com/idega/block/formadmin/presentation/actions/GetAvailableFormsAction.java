@@ -1,16 +1,14 @@
 package com.idega.block.formadmin.presentation.actions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import com.idega.block.form.bean.FormBean;
-import com.idega.block.form.presentation.FormListViewer;
+import com.idega.block.formadmin.business.beans.AvailableFormBean;
+import com.idega.block.formadmin.business.beans.AvailableFormsLister;
 import com.idega.block.formadmin.presentation.components.PhaseManagedGridHtmlDataTable;
 
 /**
@@ -23,32 +21,13 @@ public class GetAvailableFormsAction implements ActionListener, IPhaseValueProvi
 		
 	}
 	
-	public static final String COLUMNID_FORM_NAME = "form_name";
-	private static final String COLUMNID_ID = "id";
+	public static final String COLUMNID_FORM_NAME = "formTitle";
 	
 	public List getAvailableForms() {
 	
-		List<Map> forms_names = new ArrayList<Map>();
+		List<AvailableFormBean> available_forms = AvailableFormsLister.getInstance().getAvailableForms();
 		
-		FormListViewer viewer = new FormListViewer();
-		
-		List<FormBean> form_beans = viewer.getForms();
-			
-		if(form_beans != null) {
-			for (Iterator<FormBean> iter = form_beans.iterator(); iter.hasNext();) {
-				
-				Map<String, String> form_name = new HashMap<String, String>();
-				
-				FormBean bean = iter.next();
-				
-				form_name.put(COLUMNID_ID, bean.getFormId());
-				form_name.put(COLUMNID_FORM_NAME, bean.getName());
-				
-				forms_names.add(form_name);
-			}
-		}
-		
-		return forms_names;
+		return available_forms;
 	}
 	
 	public static void initiateTableColumnsProperties(Map session_map) {

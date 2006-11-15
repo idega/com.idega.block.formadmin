@@ -7,12 +7,12 @@ import java.util.Map;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import com.idega.block.formadmin.business.beans.AvailableFormBean;
-import com.idega.block.formadmin.business.beans.AvailableFormsLister;
+import com.idega.block.form.business.AvailableFormBean;
+import com.idega.block.form.business.AvailableFormsLister;
 import com.idega.block.formadmin.presentation.components.PhaseManagedGridHtmlDataTable;
 
 /**
- * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
+ * @author <a href="mailto:civilis@idega.com">Vytautas ï¿½ivilis</a>
  * @version 1.0
  */
 public class GetAvailableFormsAction implements ActionListener, IPhaseValueProvider {

@@ -6,7 +6,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionListener;
 
 import com.idega.block.formadmin.presentation.FormViewerBlock;
-import com.idega.block.formadmin.presentation.actions.CreateNewFormAction;
 import com.idega.block.formadmin.presentation.actions.GetAvailableFormsAction;
 import com.idega.block.formadmin.presentation.actions.GetSubmittedDataListAction;
 import com.idega.block.formadmin.presentation.actions.IPhaseValueProvider;
@@ -20,7 +19,6 @@ import com.idega.block.formadmin.presentation.actions.ViewSubmittedDataListActio
  */
 public class PhaseManagedBean {
 	
-	private ActionListener create_new_form_action;
 	private ActionListener view_available_forms_action;
 	private ActionListener get_available_forms_action;
 	private ActionListener get_submitted_data_list_action;
@@ -40,25 +38,10 @@ public class PhaseManagedBean {
 	
 	public ActionListener getButton1ActionListener() {
 		
-		Map session_map = getSessionMap();
-		String phase = (String)session_map.get(PHASE);
-		
-		if(phase == null || phase.equals(PHASE1)) {
-			
-			if(create_new_form_action == null)
-				create_new_form_action = new CreateNewFormAction();
+		if(view_available_forms_action == null)
+			view_available_forms_action = new ViewAvailableFormsAction();
 				
-			return create_new_form_action;
-			
-		} else if(phase.equals(PHASE2)) {
-			
-			if(view_available_forms_action == null)
-				view_available_forms_action = new ViewAvailableFormsAction();
-				
-			return view_available_forms_action;
-		}
-		
-		return null;
+		return view_available_forms_action;
 	}
 	
 	public String getButton1Value() {

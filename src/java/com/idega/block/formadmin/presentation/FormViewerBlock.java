@@ -63,7 +63,8 @@ public class FormViewerBlock extends WFBlock {
 		
 		HtmlCommandButton button1 = new HtmlCommandButton();
 		button1.setId(button1_id);
-		button1.setRendered(true);
+//		rendered only in phase2
+		button1.setValueBinding(rendered_att, app.createValueBinding("#{phaseManagedBean.formReaderRendered}"));
 		button1.setStyleClass(button_style_class);
 		button1.setActionListener(app.createMethodBinding("#{phaseManagedBean.button1ActionListener.processAction}", new Class[]{ActionEvent.class}));
 		button1.setValueBinding(value_att, app.createValueBinding("#{phaseManagedBean.button1Value}"));

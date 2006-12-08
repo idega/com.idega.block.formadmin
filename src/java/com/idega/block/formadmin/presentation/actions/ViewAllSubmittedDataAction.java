@@ -3,15 +3,16 @@ package com.idega.block.formadmin.presentation.actions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-
+import com.idega.block.form.business.FormsService;
 import com.idega.block.formadmin.presentation.FormViewerBlock;
 import com.idega.block.formadmin.presentation.components.PhaseManagedGridHtmlDataTable;
-import com.idega.block.formreader.business.SubmittedDataReader;
-import com.idega.block.formreader.business.beans.SubmittedDataBean;
+import com.idega.business.IBOLookup;
+import com.idega.business.IBOLookupException;
+import com.idega.idegaweb.IWApplicationContext;
+import com.idega.presentation.IWContext;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
@@ -31,28 +32,20 @@ public class ViewAllSubmittedDataAction implements ActionListener, IPhaseValuePr
 	public static final String SUBMITTED_DATA = "com.idega.block.formadmin.presentation.actions.ViewAllSubmittedDataAction.SUBMITTED_DATA";
 	public static final String SUBMITTED_DATA_COLUMNS_PROPERTIES = "com.idega.block.formadmin.presentation.actions.ViewAllSubmittedDataAction.SUBMITTED_DATA_COLUMNS_PROPERTIES";
 	
-	public List getAllSubmittedData() {
-		
-		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+	public List getAllSubmittedData() {		
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		Map session_map = ctx.getExternalContext().getSessionMap();
 		String current_formid = (String)session_map.get(FormViewerBlock.CURRENTLY_VIEWED_FORMID);
 		
-		List submitted_data_names;
+		List submitted_data_names = new ArrayList();
 		
 		if(current_formid != null) {
-			
 			try {
-				
-				SubmittedDataReader data_reader = SubmittedDataReader.getInstance();
-				data_reader.setFormIdentifier(current_formid);
-				
-				List<SubmittedDataBean> submitted_data = data_reader.getFormAllSubmittedData();
-				submitted_data_names = submitted_data;
-				
+				submitted_data_names = getFormsService(ctx).listSubmittedData(current_formid);
 			} catch (Exception e) {
-				submitted_data_names = new ArrayList();
+				
 			}
-		} else
-			submitted_data_names = new ArrayList();
+		}
 		
 		return submitted_data_names;
 	}
@@ -74,6 +67,18 @@ public class ViewAllSubmittedDataAction implements ActionListener, IPhaseValuePr
 	public String getButtonValue() {
 		
 		return "View all submitted data";
+	}
+	
+	private FormsService getFormsService(FacesContext context) {
+		FormsService service = null;
+		try {
+			IWApplicationContext iwc = IWContext.getIWContext(context);
+			service = (FormsService) IBOLookup.getServiceInstance(iwc, FormsService.class);
+		}
+		catch (IBOLookupException e) {
+			//logger.error("Could not find FormsService");
+		}
+		return service;
 	}
 	
 }

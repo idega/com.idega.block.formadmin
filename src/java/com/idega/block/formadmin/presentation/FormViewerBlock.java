@@ -2,31 +2,26 @@ package com.idega.block.formadmin.presentation;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
-import org.apache.myfaces.component.html.ext.HtmlCommandButton;
-
-import com.idega.block.formadmin.presentation.beans.PhaseManagedBean;
 import com.idega.block.formadmin.presentation.components.GridHtmlDataTable;
-import com.idega.block.formadmin.presentation.components.PhaseManagedGridHtmlDataTable;
 import com.idega.block.formreader.presentation.FormReaderBlock;
 import com.idega.webface.WFBlock;
 import com.idega.webface.WFContainer;
-import com.idega.webface.WFToolbar;
-
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
  * @version 1.0
  */
 public class FormViewerBlock extends WFBlock {
+	
+	private static final String FORM_CONTAINER = "FORM_CONTAINER";
+	private static final String FORM_RENDERER_CONTAINER = "FORM_RENDERER_CONTAINER";
 
 	public FormViewerBlock() {
 		super("Form Admin");
@@ -34,13 +29,10 @@ public class FormViewerBlock extends WFBlock {
 	
 	private static final String FORM_ADMIN_STYLE_CLASS_ID = "_formadmin";
 	private static final String form_name = "FormViewer";
-	private static final String button_style_class = "button"+FORM_ADMIN_STYLE_CLASS_ID;
-	private static final String label_style_class = "label"+FORM_ADMIN_STYLE_CLASS_ID;
 	private static final String table_style_class = "sp_table"+FORM_ADMIN_STYLE_CLASS_ID;
-	private static final String button1_id = "button1_id";
-	private static final String button2_id = "button2_id";
-	private static final String button3_id = "button3_id";
-	private static final String table_id = "table_id";
+	private static final String table2_style_class = "sp_table2"+FORM_ADMIN_STYLE_CLASS_ID;
+	private static final String available_forms_table_id = "available_forms_table_id";
+	private static final String submitted_data_table_id = "submitted_data_table_id";
 	private static final String value_att = "value";
 	private static final String rendered_att = "rendered";
 
@@ -48,74 +40,59 @@ public class FormViewerBlock extends WFBlock {
 	public void initializeComponent(FacesContext ctx) {
 		
 		setMainAreaStyleClass(null);
-		
 		setStyleClass(getStyleClass()+(" form_viewer_block"+FORM_ADMIN_STYLE_CLASS_ID));
-		
-		Map session_map = ctx.getExternalContext().getSessionMap();
-		
-		if(session_map.get(PHASE) == null)
-			session_map.put(PHASE, PHASE1);
 		
 		Application app = ctx.getApplication();
 		
 		HtmlForm form = new HtmlForm();
 		form.setId(form_name);
 		
-		HtmlCommandButton button1 = new HtmlCommandButton();
-		button1.setId(button1_id);
-//		rendered only in phase2
-		button1.setValueBinding(rendered_att, app.createValueBinding("#{phaseManagedBean.formReaderRendered}"));
-		button1.setStyleClass(button_style_class);
-		button1.setActionListener(app.createMethodBinding("#{phaseManagedBean.button1ActionListener.processAction}", new Class[]{ActionEvent.class}));
-		button1.setValueBinding(value_att, app.createValueBinding("#{phaseManagedBean.button1Value}"));
+		GridHtmlDataTable available_forms_grid_table = new GridHtmlDataTable();
+		available_forms_grid_table.setRendered(true);
+		available_forms_grid_table.setStyleClass(table_style_class);
+		available_forms_grid_table.setRowChangeColor("#F3F7F6");
+		available_forms_grid_table.setRowSelectedColor("#F3F7F6");
+		available_forms_grid_table.setId(available_forms_table_id);
+		available_forms_grid_table.setValueBinding(value_att, app.createValueBinding("#{availableFormsAction.availableForms}"));
+		available_forms_grid_table.setValueBinding(GridHtmlDataTable.COLS_PROPS_NAMES, app.createValueBinding("#{availableFormsAction.tableColumnsProperties}"));
+		available_forms_grid_table.setValueBinding(GridHtmlDataTable.SELECTED_ROW, app.createValueBinding("#{availableFormsAction.selectedRowProvider}"));
+		HtmlOutputText header = new HtmlOutputText();
+		header.setValue("All forms");
+		available_forms_grid_table.setHeader(header);
 		
-		HtmlCommandButton button2 = new HtmlCommandButton();
-		button2.setId(button2_id);
-		button2.setRendered(true);
-		button2.setStyleClass(button_style_class);
-		button2.setActionListener(app.createMethodBinding("#{phaseManagedBean.button2ActionListener.processAction}", new Class[]{ActionEvent.class}));
-		button2.setValueBinding(value_att, app.createValueBinding("#{phaseManagedBean.button2Value}"));
+		GridHtmlDataTable submitted_data_grid_table = new GridHtmlDataTable();
+		submitted_data_grid_table.setRendered(true);
+		submitted_data_grid_table.setStyleClass(table2_style_class);
+		submitted_data_grid_table.setRowChangeColor("#F3F7F6");
+		submitted_data_grid_table.setRowSelectedColor("#F3F7F6");
+		submitted_data_grid_table.setId(submitted_data_table_id);
+		submitted_data_grid_table.setValueBinding(value_att, app.createValueBinding("#{allSubmittedDataAction.allSubmittedData}"));
+		submitted_data_grid_table.setValueBinding(GridHtmlDataTable.COLS_PROPS_NAMES, app.createValueBinding("#{allSubmittedDataAction.tableColumnsProperties}"));
+		submitted_data_grid_table.setValueBinding(GridHtmlDataTable.SELECTED_ROW, app.createValueBinding("#{allSubmittedDataAction.selectedRowProvider}"));
+		header = new HtmlOutputText();
+		header.setValue("Selected form submitted data list");
+		submitted_data_grid_table.setHeader(header);
 		
-		HtmlOutputText label = new HtmlOutputText();
-		label.setRendered(true);
-		label.setStyleClass(label_style_class);
-		label.setValueBinding(value_att, app.createValueBinding("#{phaseManagedBean.labelValue}"));
+		WFContainer table1_container = new WFContainer();
+		table1_container.getChildren().add(available_forms_grid_table);
+		table1_container.setStyleClass("table1_container"+FORM_ADMIN_STYLE_CLASS_ID);
 		
-		HtmlCommandButton button3 = new HtmlCommandButton();
-		button3.setId(button3_id);
-		button3.setRendered(true);
-		button3.setStyleClass(button_style_class);
-		button3.setActionListener(app.createMethodBinding("#{phaseManagedBean.button3ActionListener.processAction}", new Class[]{ActionEvent.class}));
-		button3.setValueBinding(value_att, app.createValueBinding("#{phaseManagedBean.button3Value}"));
+		WFContainer table2_container = new WFContainer();
+		table2_container.getChildren().add(submitted_data_grid_table);
+		table2_container.setStyleClass("table2_container"+FORM_ADMIN_STYLE_CLASS_ID);
 		
-		PhaseManagedGridHtmlDataTable grid_table = new PhaseManagedGridHtmlDataTable();
-		grid_table.setRendered(true);
-		grid_table.setStyleClass(table_style_class);
-//		grid_table.setRowChangeColor("#72C0FE");
-		grid_table.setRowChangeColor("#F3F7F6");
-		grid_table.setRowSelectedColor("#F3F7F6");
-		grid_table.setId(table_id);
-		grid_table.setValueBinding(value_att, app.createValueBinding("#{phaseManagedBean.gridTableValuesProvider.gridTableValues}"));
-		PhaseManagedBean.initiateTableColumns();
-		
-		WFContainer table_container = new WFContainer();
-		table_container.getChildren().add(grid_table);
-		table_container.setStyleClass("table_container"+FORM_ADMIN_STYLE_CLASS_ID);
+		WFContainer tables_container = new WFContainer();
+		tables_container.setStyleClass("tables_container"+FORM_ADMIN_STYLE_CLASS_ID);
+		tables_container.getChildren().add(table1_container);
+		tables_container.getChildren().add(table2_container);
 		
 		FormReaderBlock form_reader = new FormReaderBlock();
-		form_reader.setValueBinding(rendered_att, app.createValueBinding("#{phaseManagedBean.formReaderRendered}"));
-		form_reader.setValueBinding(FormReaderBlock.form_identifier, app.createValueBinding("#{phaseManagedBean.selectedFormIdentifier}"));
-		form_reader.setValueBinding(FormReaderBlock.submitted_data_identifier, app.createValueBinding("#{phaseManagedBean.selectedSubmittedDataIdentifier}"));
-		
-		WFToolbar wf_toolbar = new WFToolbar();
-		wf_toolbar.addButton(button1);
-		wf_toolbar.addButton(button2);
-		wf_toolbar.addButton(button3);
+		form_reader.setValueBinding(rendered_att, app.createValueBinding("#{allSubmittedDataAction.formReaderRendered}"));
+		form_reader.setValueBinding(FormReaderBlock.form_identifier, app.createValueBinding("#{availableFormsAction.selectedRow}"));
+		form_reader.setValueBinding(FormReaderBlock.submitted_data_identifier, app.createValueBinding("#{allSubmittedDataAction.selectedRow}"));
 		
 		List<UIComponent> form_children = form.getChildren();
-		form_children.add(wf_toolbar);
-		form_children.add(label);
-		form_children.add(table_container);
+		form_children.add(tables_container);
 		
 		WFContainer form_container = new WFContainer();
 		form_container.getChildren().add(form);
@@ -127,22 +104,8 @@ public class FormViewerBlock extends WFBlock {
 		getFacets().put(FORM_RENDERER_CONTAINER, form_renderer_container);
 	}
 	
-	public static final String SELECTED_ROWID = "com.idega.block.formadmin.presentation.FormViewerBlock.SELECTED_ROWID";
-	public static final String CURRENTLY_VIEWED_FORMID = "com.idega.block.formadmin.presentation.FormViewerBlock.CURRENTLY_VIEWED_FORMID";
-	public static final String CURRENTLY_VIEWED_SUBMITTED_DATA_IDENTIFIER = "com.idega.block.formadmin.presentation.FormViewerBlock.CURRENTLY_VIEWED_SUBMITTED_DATA_IDENTIFIER";
-	private static final int GRID_TABLE = 2;
-	
-	public static final String PHASE = "com.idega.block.formadmin.presentation.FormViewerBlock.phase";
-	public static final String PHASE1 = "com.idega.block.formadmin.presentation.FormViewerBlock.phase1";
-	public static final String PHASE2 = "com.idega.block.formadmin.presentation.FormViewerBlock.phase2";
-	
-	private static final String FORM_CONTAINER = "FORM_CONTAINER";
-	private static final String FORM_RENDERER_CONTAINER = "FORM_RENDERER_CONTAINER";
-	
 	@Override
 	public void encodeBegin(FacesContext ctx) throws IOException {
-		
-		PhaseManagedBean.initiateTableColumns();
 		
 		super.encodeBegin(ctx);
 	}
@@ -151,15 +114,6 @@ public class FormViewerBlock extends WFBlock {
 	public void decode(FacesContext ctx) {
 		
 		super.decode(ctx);
-		
-		Map session_map = ctx.getExternalContext().getSessionMap();
-		List form_children = ((HtmlForm)getFacet(FORM_CONTAINER).getChildren().get(0)).getChildren();
-		
-		GridHtmlDataTable grid_table = (GridHtmlDataTable)((UIComponent)form_children.get(GRID_TABLE)).getChildren().get(0);
-		String selected_row_id = grid_table.getSelectedRowId(ctx);
-		
-		if(selected_row_id != null)
-			session_map.put(SELECTED_ROWID, selected_row_id);
 	}
 	
 	@Override

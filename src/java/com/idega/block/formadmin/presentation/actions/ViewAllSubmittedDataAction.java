@@ -1,14 +1,16 @@
 package com.idega.block.formadmin.presentation.actions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import com.idega.block.form.business.FormsService;
-import com.idega.block.formadmin.presentation.FormViewerBlock;
-import com.idega.block.formadmin.presentation.components.PhaseManagedGridHtmlDataTable;
+import com.idega.block.formadmin.presentation.components.ISelectedRowProvider;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.idegaweb.IWApplicationContext;
@@ -18,55 +20,64 @@ import com.idega.presentation.IWContext;
  * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
  * @version 1.0
  */
-public class ViewAllSubmittedDataAction implements ActionListener, IPhaseValueProvider {
+public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowProvider {
 	
-	public void processAction(ActionEvent ae) {
-		
-		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-		
-		session_map.put(FormViewerBlock.CURRENTLY_VIEWED_SUBMITTED_DATA_IDENTIFIER, session_map.get(FormViewerBlock.SELECTED_ROWID));
-	}
-	
+	private static final Logger log = Logger.getLogger(ViewAllSubmittedDataAction.class.getName());
+
 	public static final String COLUMNID_LABEL1 = "label1";
 	public static final String COLUMNID_LABEL2 = "label2";
-	public static final String SUBMITTED_DATA = "com.idega.block.formadmin.presentation.actions.ViewAllSubmittedDataAction.SUBMITTED_DATA";
-	public static final String SUBMITTED_DATA_COLUMNS_PROPERTIES = "com.idega.block.formadmin.presentation.actions.ViewAllSubmittedDataAction.SUBMITTED_DATA_COLUMNS_PROPERTIES";
+	
+	private String selected_row;
+	private String selected_forms_row;
+	List<String> col_props;
+	
+	private static final String AV_FORMS_ACTION = "availableFormsAction";
+	
+	public void processAction(ActionEvent ae) { }
 	
 	public List getAllSubmittedData() {		
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		Map session_map = ctx.getExternalContext().getSessionMap();
-		String current_formid = (String)session_map.get(FormViewerBlock.CURRENTLY_VIEWED_FORMID);
 		
-		List submitted_data_names = new ArrayList();
+		GetAvailableFormsAction available_forms_action = 
+			(GetAvailableFormsAction)session_map.get(AV_FORMS_ACTION);
 		
-		if(current_formid != null) {
+		List submitted_data_names = null;
+		
+		if(available_forms_action != null && available_forms_action.getSelectedRow() != null) {
+			
 			try {
-				submitted_data_names = getFormsService(ctx).listSubmittedData(current_formid);
+				submitted_data_names = getFormsService(ctx).listSubmittedData(available_forms_action.getSelectedRow());
 			} catch (Exception e) {
-				
+				log.warning("Error getting submitted data list");
 			}
 		}
 		
-		return submitted_data_names;
+		List<Map<String, String>> fakpak = new ArrayList<Map<String, String>>();
+		
+		for (int i = 0; i < 5; i++) {
+			
+			Map<String, String> xx = new HashMap<String, String>();
+			fakpak.add(xx);
+			xx.put("id", (i+"xx"));
+			xx.put("label1", (i+" label1"));
+			xx.put("label2", (i+" label2"));
+		}
+		
+//		return submitted_data_names == null ? new ArrayList() : submitted_data_names;
+		return submitted_data_names == null ? fakpak : submitted_data_names;
 	}
 	
-	public static void initiateTableColumnsProperties(Map session_map) {
+	public List<String> getTableColumnsProperties() {
 		
-		List<String> col_props = new ArrayList<String>();
-		col_props.add(COLUMNID_LABEL1);
-		col_props.add(COLUMNID_LABEL2);
-		
-		session_map.put(PhaseManagedGridHtmlDataTable.COLUMN_PROPERTIES, col_props);
-	}
-	
-	public List getGridTableValues() {
-		
-		return getAllSubmittedData();
-	}
-	
-	public String getButtonValue() {
-		
-		return "View all submitted data";
+		if(col_props == null) {
+			
+			col_props = new ArrayList<String>();
+			
+			col_props.add(COLUMNID_LABEL1);
+			col_props.add(COLUMNID_LABEL2);
+		}
+		return col_props;
 	}
 	
 	private FormsService getFormsService(FacesContext context) {
@@ -76,9 +87,53 @@ public class ViewAllSubmittedDataAction implements ActionListener, IPhaseValuePr
 			service = (FormsService) IBOLookup.getServiceInstance(iwc, FormsService.class);
 		}
 		catch (IBOLookupException e) {
-			//logger.error("Could not find FormsService");
+			log.warning("Could not find FormsService");
 		}
 		return service;
 	}
 	
+	public ISelectedRowProvider getSelectedRowProvider() {
+		return this;
+	}
+	
+	public void setSelectedRow(String selected_row) {
+		this.selected_row = selected_row;
+	}
+	
+	public String getSelectedRow() {
+		
+		if(selected_forms_row != null) {
+			
+			Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+			
+			GetAvailableFormsAction available_forms_action = 
+				(GetAvailableFormsAction)session_map.get(AV_FORMS_ACTION);
+			
+			if(available_forms_action == null)
+				return null;
+			
+			String selected_row = available_forms_action.getSelectedRow();
+			
+			if(!selected_forms_row.equals(selected_row)) {
+				selected_forms_row = available_forms_action.getSelectedRow();
+				this.selected_row = null;
+			}
+				
+		} else
+			selected_row = null;
+		
+		return selected_row;
+	}
+	
+	public boolean isFormReaderRendered() {
+		
+		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+		
+		GetAvailableFormsAction available_forms_action = 
+			(GetAvailableFormsAction)session_map.get(AV_FORMS_ACTION);
+		
+		return available_forms_action != null && 
+			available_forms_action.getSelectedRow() != null &&
+			getSelectedRow() != null;
+	}
 }

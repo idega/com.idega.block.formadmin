@@ -3,18 +3,17 @@ package com.idega.block.formadmin.presentation.components;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.application.Application;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import org.apache.myfaces.component.html.ext.HtmlInputHidden;
 import org.apache.myfaces.custom.column.HtmlSimpleColumn;
 import org.apache.myfaces.custom.htmlTag.HtmlTag;
 
-import com.idega.block.formadmin.presentation.FormViewerBlock;
 import com.idega.webface.WFContainer;
 
 /**
@@ -28,6 +27,9 @@ public class GridHtmlDataTable extends HtmlDataTable {
 	private String row_selected_color = "#E8E8E8";
 	private String selected_row_key;
 	private String selected_row_id;
+	
+	public static final String COLS_PROPS_NAMES = "columns_properties_names";
+	public static final String SELECTED_ROW = "selected_row";
 	
 	public void setRowChangeColor(String color) {
 		
@@ -48,20 +50,6 @@ public class GridHtmlDataTable extends HtmlDataTable {
 	
 	public void setRowSelectedColor(String color) {
 		row_selected_color = color;
-	}
-	
-	public String getSelectedRowId(FacesContext ctx) {
-
-		if(selected_row_key == null)
-			return null;
-		
-		selected_row_id = (String)ctx.getExternalContext().getRequestParameterMap().get(selected_row_key);
-		
-		return selected_row_id;
-	}
-	
-	public void setSelectedRowId(String row_id) {
-		selected_row_id = row_id;
 	}
 	
 	private void removeHelperTags(List parent_children) {
@@ -89,13 +77,17 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		
 		String selected_row_variable = grid_client_id.replaceAll(":", "_")+"_selected_row";
 		
-		Map session_map = ctx.getExternalContext().getSessionMap();
-		
 		List parent_children = getParent().getChildren();
 		
 		removeHelperTags(parent_children);
 		
-		selected_row_id = (String)session_map.get(FormViewerBlock.SELECTED_ROWID);
+		ValueBinding val_bind = getValueBinding(SELECTED_ROW);
+		
+		if(val_bind != null) {
+			
+			ISelectedRowProvider provider = (ISelectedRowProvider)val_bind.getValue(ctx);
+			selected_row_id = provider.getSelectedRow();
+		}
 		
 		if(selected_row_id != null) {
 			
@@ -169,15 +161,45 @@ public class GridHtmlDataTable extends HtmlDataTable {
 //
 //      	if(window.selected_row) { selected_row.style.backgroundColor = GridHtmlDataTable_prev_color; }
 //
-//      		GridHtmlDataTable_sel_row = this.firstChild.firstChild.value;
+//      	GridHtmlDataTable_sel_row = this.firstChild.firstChild.value;
 //      		
-//				if(GridHtmlDataTable_sel_row) {
+//			if(GridHtmlDataTable_sel_row) {
 //      			
-//      			document.getElementById('hidden_id').value = GridHtmlDataTable_sel_row;
+//      		document.getElementById('hidden_id').value = GridHtmlDataTable_sel_row;
 //      
-//      			this.style.backgroundColor='color';
-//      			selected_lala = this; 
-//					GridHtmlDataTable_prev_color = 'color';
+//      		this.style.backgroundColor='color';
+//      		selected_lala = this; 
+//				GridHtmlDataTable_prev_color = 'color';
+//				
+//				var doc_forms = document.forms;
+//				
+//				var form;
+//				
+//				if(doc_forms && doc_forms.length < 2)
+//					form = doc_forms[0];
+//				else if(doc_forms) {
+//					
+//					for(var i = 0; i < doc_forms.length; i++) {
+//		
+//						var form_elements = doc_forms[i].elements;
+//						var found = false;
+//		
+//						for(var j = 0; j < form_elements.length; j++) {
+//							
+//							if(form_elements[j] == this) {
+//								found = true;
+//								break;
+//							}
+//						}
+//						
+//						if(found) {
+//							form = doc_forms[i];
+//							break;
+//						}
+//					}
+//				}
+//				if(form)
+//					form.submit();
 //      	}
 //		}
 		
@@ -197,7 +219,7 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		.append("GridHtmlDataTable_sel_row = this.firstChild.firstChild.value;")
 		.append("if(GridHtmlDataTable_sel_row) {")
 		.append("document.getElementById('")
-		.append(selected_row_state_keeper.getClientId(ctx))
+		.append(selected_row_key)
 		.append("')")
 		.append(".value = GridHtmlDataTable_sel_row;")
 		.append("this.style.backgroundColor='")
@@ -207,6 +229,7 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		.append(" = this; GridHtmlDataTable_prev_color = '")
 		.append(row_selected_color)
 		.append("';")
+		.append("var doc_forms = document.forms; var form; if(doc_forms && doc_forms.length < 2) form = doc_forms[0]; else if(doc_forms) { for(var i = 0; i < doc_forms.length; i++) { var form_elements = doc_forms[i].elements; var found = false; for(var j = 0; j < form_elements.length; j++) { if(form_elements[j] == this) { found = true; break; } } if(found) { form = doc_forms[i]; break; } }}if(form) form.submit();")
 		.append("} }")
 		.toString();
 		
@@ -215,21 +238,39 @@ public class GridHtmlDataTable extends HtmlDataTable {
 	
 	@Override
 	public void encodeBegin(FacesContext ctx) throws IOException {
+		
+		setColumnsPropertiesNames();
 		initRows(ctx);
 		super.encodeBegin(ctx);
 	}
 	
 	@Override
-	public void encodeEnd(FacesContext ctx) throws IOException {
-		// TODO Auto-generated method stub
-		super.encodeEnd(ctx);
+	public void decode(FacesContext ctx) {
+		
+		ValueBinding val_bind = getValueBinding(SELECTED_ROW);
+		
+		if(selected_row_key != null && val_bind != null) {
+			
+			selected_row_id = (String)ctx.getExternalContext().getRequestParameterMap().get(selected_row_key);
+			
+			ISelectedRowProvider provider = (ISelectedRowProvider)val_bind.getValue(ctx);
+			provider.setSelectedRow(selected_row_id);
+		}
+		
+		super.decode(ctx);
 	}
 	
-	public void setColumnsPropertiesNames(List<String> properties_names) {
+	public void setColumnsPropertiesNames() {
+		
+		ValueBinding val_bind = getValueBinding(COLS_PROPS_NAMES);
+		
+		if(val_bind == null)
+			return;
 
 		List table_children = getChildren();
 		table_children.clear();
-		Application app = FacesContext.getCurrentInstance().getApplication();
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		Application app = ctx.getApplication();
 		HtmlSimpleColumn col = new HtmlSimpleColumn();
 		col.setRendered(true);
 		col.setStyle("display: none;");
@@ -242,6 +283,9 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		col.getChildren().add(current_row_id_keeper);
 		table_children.add(col);
 		
+		List<String> properties_names = 
+			(List<String>)val_bind.getValue(ctx);
+		
 		if(properties_names != null) {
 			
 			String att_name = "value";
@@ -252,7 +296,6 @@ public class GridHtmlDataTable extends HtmlDataTable {
 				
 				col = new HtmlSimpleColumn();
 				col.setRendered(true);
-				
 				
 				HtmlOutputText col_label = new HtmlOutputText();
 				
@@ -269,6 +312,9 @@ public class GridHtmlDataTable extends HtmlDataTable {
 				col_label.setRendered(true);
 				col.getChildren().add(container);
 				table_children.add(col);
+
+//				HtmlCommandSortHeader sort_header = new HtmlCommandSortHeader();
+//				sort_header.setValue("oooopapapa");
 			}
 		}
 		

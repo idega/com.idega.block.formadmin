@@ -165,7 +165,8 @@ public class GridHtmlDataTable extends HtmlDataTable {
 //      		
 //			if(GridHtmlDataTable_sel_row) {
 //      			
-//      		document.getElementById('hidden_id').value = GridHtmlDataTable_sel_row;
+//      		var selected_row_hidden = document.getElementById('hidden_id');
+//				selected_row_hidden.value = GridHtmlDataTable_sel_row;
 //      
 //      		this.style.backgroundColor='color';
 //      		selected_lala = this; 
@@ -186,7 +187,7 @@ public class GridHtmlDataTable extends HtmlDataTable {
 //		
 //						for(var j = 0; j < form_elements.length; j++) {
 //							
-//							if(form_elements[j] == this) {
+//							if(form_elements[j] == selected_row_hidden) {
 //								found = true;
 //								break;
 //							}
@@ -218,10 +219,9 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		
 		.append("GridHtmlDataTable_sel_row = this.firstChild.firstChild.value;")
 		.append("if(GridHtmlDataTable_sel_row) {")
-		.append("document.getElementById('")
+		.append("var selected_row_hidden = document.getElementById('")
 		.append(selected_row_key)
-		.append("')")
-		.append(".value = GridHtmlDataTable_sel_row;")
+		.append("'); selected_row_hidden.value = GridHtmlDataTable_sel_row;")
 		.append("this.style.backgroundColor='")
 		.append(row_selected_color)
 		.append("';")
@@ -229,7 +229,7 @@ public class GridHtmlDataTable extends HtmlDataTable {
 		.append(" = this; GridHtmlDataTable_prev_color = '")
 		.append(row_selected_color)
 		.append("';")
-		.append("var doc_forms = document.forms; var form; if(doc_forms && doc_forms.length < 2) form = doc_forms[0]; else if(doc_forms) { for(var i = 0; i < doc_forms.length; i++) { var form_elements = doc_forms[i].elements; var found = false; for(var j = 0; j < form_elements.length; j++) { if(form_elements[j] == this) { found = true; break; } } if(found) { form = doc_forms[i]; break; } }}if(form) form.submit();")
+		.append("var doc_forms = document.forms; var form; if(doc_forms && doc_forms.length < 2) form = doc_forms[0]; else if(doc_forms) { for(var i = 0; i < doc_forms.length; i++) { var form_elements = doc_forms[i].elements; var found = false; for(var j = 0; j < form_elements.length; j++) { if(form_elements[j] == selected_row_hidden) { found = true; break; } } if(found) { form = doc_forms[i]; break; } }}if(form) form.submit();")
 		.append("} }")
 		.toString();
 		

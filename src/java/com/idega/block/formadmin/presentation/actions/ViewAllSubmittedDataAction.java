@@ -1,7 +1,6 @@
 package com.idega.block.formadmin.presentation.actions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -54,19 +53,7 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 			}
 		}
 		
-//		List<Map<String, String>> fakpak = new ArrayList<Map<String, String>>();
-//		
-//		for (int i = 0; i < 5; i++) {
-//			
-//			Map<String, String> xx = new HashMap<String, String>();
-//			fakpak.add(xx);
-//			xx.put("id", (i+"xx"));
-//			xx.put("label1", (i+" label1"));
-//			xx.put("label2", (i+" label2"));
-//		}
-		
 		return submitted_data_names == null ? new ArrayList() : submitted_data_names;
-//		return submitted_data_names == null ? fakpak : submitted_data_names;
 	}
 	
 	public List<String> getTableColumnsProperties() {
@@ -111,14 +98,9 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 		if(available_forms_action == null)
 			return null;
 		
-		System.out.println("getSelectedRow()______________");
 		if(selected_forms_row != null) {
 			
-			System.out.println("selected_forms_row: "+selected_forms_row);
-			
 			String selected_row = available_forms_action.getSelectedRow();
-			
-			System.out.println("selected_row: "+selected_row);
 			
 			if(!selected_forms_row.equals(selected_row)) {
 				selected_forms_row = available_forms_action.getSelectedRow();
@@ -128,26 +110,17 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 		} else {
 			selected_row = null;
 			selected_forms_row = available_forms_action.getSelectedRow();
-			System.out.println("else: setting selected_forms_row: "+selected_forms_row);
 		}
 		
-		System.out.println("returning: "+selected_row);
-		
-		System.out.println("getSelectedRow()_______end_______");
 		return selected_row;
 	}
 	
 	public boolean isFormReaderRendered() {
 		
-		System.out.println("is reader rendered: ");
 		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		
 		GetAvailableFormsAction available_forms_action = 
 			(GetAvailableFormsAction)session_map.get(AV_FORMS_ACTION);
-		
-		System.out.println("returning: "+(available_forms_action != null && 
-				available_forms_action.getSelectedRow() != null &&
-				getSelectedRow() != null));
 		
 		return available_forms_action != null && 
 			available_forms_action.getSelectedRow() != null &&

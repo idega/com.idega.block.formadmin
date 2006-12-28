@@ -50,22 +50,23 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 				submitted_data_names = getFormsService(ctx).listSubmittedData(available_forms_action.getSelectedRow());
 			} catch (Exception e) {
 				log.warning("Error getting submitted data list");
+				e.printStackTrace();
 			}
 		}
 		
-		List<Map<String, String>> fakpak = new ArrayList<Map<String, String>>();
+//		List<Map<String, String>> fakpak = new ArrayList<Map<String, String>>();
+//		
+//		for (int i = 0; i < 5; i++) {
+//			
+//			Map<String, String> xx = new HashMap<String, String>();
+//			fakpak.add(xx);
+//			xx.put("id", (i+"xx"));
+//			xx.put("label1", (i+" label1"));
+//			xx.put("label2", (i+" label2"));
+//		}
 		
-		for (int i = 0; i < 5; i++) {
-			
-			Map<String, String> xx = new HashMap<String, String>();
-			fakpak.add(xx);
-			xx.put("id", (i+"xx"));
-			xx.put("label1", (i+" label1"));
-			xx.put("label2", (i+" label2"));
-		}
-		
-//		return submitted_data_names == null ? new ArrayList() : submitted_data_names;
-		return submitted_data_names == null ? fakpak : submitted_data_names;
+		return submitted_data_names == null ? new ArrayList() : submitted_data_names;
+//		return submitted_data_names == null ? fakpak : submitted_data_names;
 	}
 	
 	public List<String> getTableColumnsProperties() {
@@ -102,35 +103,51 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 	
 	public String getSelectedRow() {
 		
+		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+		
+		GetAvailableFormsAction available_forms_action = 
+			(GetAvailableFormsAction)session_map.get(AV_FORMS_ACTION);
+		
+		if(available_forms_action == null)
+			return null;
+		
+		System.out.println("getSelectedRow()______________");
 		if(selected_forms_row != null) {
 			
-			Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
-			
-			GetAvailableFormsAction available_forms_action = 
-				(GetAvailableFormsAction)session_map.get(AV_FORMS_ACTION);
-			
-			if(available_forms_action == null)
-				return null;
+			System.out.println("selected_forms_row: "+selected_forms_row);
 			
 			String selected_row = available_forms_action.getSelectedRow();
+			
+			System.out.println("selected_row: "+selected_row);
 			
 			if(!selected_forms_row.equals(selected_row)) {
 				selected_forms_row = available_forms_action.getSelectedRow();
 				this.selected_row = null;
 			}
 				
-		} else
+		} else {
 			selected_row = null;
+			selected_forms_row = available_forms_action.getSelectedRow();
+			System.out.println("else: setting selected_forms_row: "+selected_forms_row);
+		}
 		
+		System.out.println("returning: "+selected_row);
+		
+		System.out.println("getSelectedRow()_______end_______");
 		return selected_row;
 	}
 	
 	public boolean isFormReaderRendered() {
 		
+		System.out.println("is reader rendered: ");
 		Map session_map = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
 		
 		GetAvailableFormsAction available_forms_action = 
 			(GetAvailableFormsAction)session_map.get(AV_FORMS_ACTION);
+		
+		System.out.println("returning: "+(available_forms_action != null && 
+				available_forms_action.getSelectedRow() != null &&
+				getSelectedRow() != null));
 		
 		return available_forms_action != null && 
 			available_forms_action.getSelectedRow() != null &&

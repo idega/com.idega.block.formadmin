@@ -1,27 +1,19 @@
-.button_formadmin {
-	padding: 1px;
-	display: inline;
-	background-color: white;
-}
-
-.label_formadmin {
-	margin: 3px;
-	padding: 3px;
-	display: block;
-	font-weight: bold;
-	background-color: #E8E8E8;
-}
-
-.sp_table_formadmin {
+.sp_table_formadmin, .sp_table2_formadmin {
 	
 	background-color: white;
-	width: 100%;
 	margin: 0px;
 	padding: 0px;
 	display: block;
 }
 
-.sp_table_formadmin td {
+.sp_table_formadmin {
+	width: 200px;
+}
+.sp_table2_formadmin {
+	width: 100%;
+}
+
+.sp_table_formadmin td, .sp_table2_formadmin td {
 	
 	padding-right: 5px;
 	padding-left: 5px;
@@ -36,7 +28,30 @@
 	max-height: 500px;
 }
 
-.table_container_formadmin {
+.tables_container_formadmin {
+	height: 200px;
+	background-color: #FAFAFA;
+	overflow: none;
+}
+
+.table1_container_formadmin, .table2_container_formadmin {
+	
 	overflow: auto;
 	height: 200px;
+	top: 50;
+	position: absolute;
+	border-color: #D7D7D7;
+	border-style: solid;
+	border-width: 0px;
+	background-color: white;
+}
+.table1_container_formadmin {
+	left: 0;
+	border-right-width: 1px;
+}
+
+.table2_container_formadmin {
+	right: 0;
+	margin-left: 220px;
+	border-left-width: 1px;
 }

@@ -10,9 +10,14 @@
 		<component-class>com.idega.block.formadmin.presentation.FormViewerBlock</component-class>
 	</component>
 	
-	    <managed-bean>
-        <managed-bean-name>phaseManagedBean</managed-bean-name>
-        <managed-bean-class>com.idega.block.formadmin.presentation.beans.PhaseManagedBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+	<managed-bean>
+  	<managed-bean-name>availableFormsAction</managed-bean-name>
+    <managed-bean-class>com.idega.block.formadmin.presentation.actions.GetAvailableFormsAction</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+  	<managed-bean-name>allSubmittedDataAction</managed-bean-name>
+    <managed-bean-class>com.idega.block.formadmin.presentation.actions.ViewAllSubmittedDataAction</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
 </faces-config>

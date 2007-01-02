@@ -4,7 +4,7 @@
     <key>
       <name>component_name</name>
       <type>java.lang.String</type>
-      <value>FormViewer</value>
+      <value>FormAdmin</value>
     </key>
     <key>
       <name>component_type</name>

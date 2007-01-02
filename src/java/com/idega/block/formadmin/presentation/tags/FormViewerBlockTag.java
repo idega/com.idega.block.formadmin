@@ -10,7 +10,7 @@ import javax.faces.webapp.UIComponentTag;
 public class FormViewerBlockTag extends UIComponentTag {
 	
 	public String getComponentType() {
-		return "FormViewerAdmin";
+		return "FormAdmin";
 	}
 
 	public String getRendererType() {

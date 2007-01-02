@@ -7,12 +7,12 @@
 
     <tlib-version>0.9.0</tlib-version>
     <jsp-version>1.2</jsp-version>
-    <short-name>IdegaWeb Form Viewer</short-name>
+    <short-name>IdegaWeb Form Admin</short-name>
     <uri>http://xmlns.idega.com/com.idega.block.formadmin</uri>
     <description>idegaweb Form Viewer block Tag Library</description>
 
 	<tag>
-		<name>FormViewer</name>
+		<name>FormAdmin</name>
 		<tag-class>com.idega.block.formadmin.presentation.tags.FormViewerBlockTag</tag-class>
 		<attribute>
 			<name>rendered</name>

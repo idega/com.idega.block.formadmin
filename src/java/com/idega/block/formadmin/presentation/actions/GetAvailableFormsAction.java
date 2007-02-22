@@ -32,7 +32,7 @@ public class GetAvailableFormsAction implements ActionListener, ISelectedRowProv
 	public List getAvailableForms() {	
 		List<SelectItem> forms = null;
 		try {
-			forms = getFormsService().listForms();
+			forms = getFormsService().getForms();
 		}
 		catch (RemoteException e) {
 			log.warning("Error getting available forms");

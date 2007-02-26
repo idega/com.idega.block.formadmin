@@ -15,7 +15,7 @@ import com.idega.webface.WFBlock;
 import com.idega.webface.WFContainer;
 
 /**
- * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
+ * @author <a href="mailto:civilis@idega.com">Vytautas ÄŒivilis</a>
  * @version 1.0
  */
 public class FormViewerBlock extends WFBlock {

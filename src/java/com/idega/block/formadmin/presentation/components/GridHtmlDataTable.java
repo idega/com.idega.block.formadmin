@@ -19,7 +19,7 @@ import com.idega.webface.WFContainer;
 /**
  * <i>WARNING!</i> This component should reside in container tag as the only child.
  * 
- * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
+ * @author <a href="mailto:civilis@idega.com">Vytautas ÄŒivilis</a>
  * @version 1.0
  */
 public class GridHtmlDataTable extends HtmlDataTable {

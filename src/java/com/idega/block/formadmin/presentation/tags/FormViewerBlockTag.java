@@ -4,7 +4,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentTag;
 
 /**
- * @author <a href="mailto:civilis@idega.com">Vytautas ‰ivilis</a>
+ * @author <a href="mailto:civilis@idega.com">Vytautas ÄŒivilis</a>
  * @version 1.0
  */
 public class FormViewerBlockTag extends UIComponentTag {

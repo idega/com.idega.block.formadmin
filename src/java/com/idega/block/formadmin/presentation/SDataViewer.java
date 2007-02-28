@@ -10,7 +10,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 
 import com.idega.block.formadmin.presentation.components.GridHtmlDataTable;
-import com.idega.block.formreader.presentation.FormReaderBlock;
+import com.idega.block.formreader.presentation.SDataPreview;
 import com.idega.webface.WFBlock;
 import com.idega.webface.WFContainer;
 
@@ -18,13 +18,13 @@ import com.idega.webface.WFContainer;
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
  * @version 1.0
  */
-public class FormViewerBlock extends WFBlock {
+public class SDataViewer extends WFBlock {
 	
 	private static final String FORM_CONTAINER = "FORM_CONTAINER";
 	private static final String FORM_RENDERER_CONTAINER = "FORM_RENDERER_CONTAINER";
 
-	public FormViewerBlock() {
-		super("Form Admin");
+	public SDataViewer() {
+		super("SDataViewer");
 	}
 	
 	private static final String FORM_ADMIN_STYLE_CLASS_ID = "_formadmin";
@@ -86,10 +86,10 @@ public class FormViewerBlock extends WFBlock {
 		tables_container.getChildren().add(table1_container);
 		tables_container.getChildren().add(table2_container);
 		
-		FormReaderBlock form_reader = new FormReaderBlock();
+		SDataPreview form_reader = new SDataPreview();
 		form_reader.setValueBinding(rendered_att, app.createValueBinding("#{allSubmittedDataAction.formReaderRendered}"));
-		form_reader.setValueBinding(FormReaderBlock.form_identifier, app.createValueBinding("#{availableFormsAction.selectedRow}"));
-		form_reader.setValueBinding(FormReaderBlock.submitted_data_identifier, app.createValueBinding("#{allSubmittedDataAction.selectedRow}"));
+		form_reader.setValueBinding(SDataPreview.form_identifier, app.createValueBinding("#{availableFormsAction.selectedRow}"));
+		form_reader.setValueBinding(SDataPreview.submitted_data_identifier, app.createValueBinding("#{allSubmittedDataAction.selectedRow}"));
 		
 		List<UIComponent> form_children = form.getChildren();
 		form_children.add(tables_container);
@@ -102,18 +102,6 @@ public class FormViewerBlock extends WFBlock {
 		
 		getFacets().put(FORM_CONTAINER, form_container);
 		getFacets().put(FORM_RENDERER_CONTAINER, form_renderer_container);
-	}
-	
-	@Override
-	public void encodeBegin(FacesContext ctx) throws IOException {
-		
-		super.encodeBegin(ctx);
-	}
-	
-	@Override
-	public void decode(FacesContext ctx) {
-		
-		super.decode(ctx);
 	}
 	
 	@Override

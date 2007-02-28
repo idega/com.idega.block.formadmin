@@ -7,10 +7,10 @@ import javax.faces.webapp.UIComponentTag;
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
  * @version 1.0
  */
-public class FormViewerBlockTag extends UIComponentTag {
+public class SDataViewerTag extends UIComponentTag {
 	
 	public String getComponentType() {
-		return "FormAdmin";
+		return "SDataViewer";
 	}
 
 	public String getRendererType() {

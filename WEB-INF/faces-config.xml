@@ -6,8 +6,8 @@
 
 <faces-config>
   <component>
-	<component-type>FormAdmin</component-type>
-	<component-class>com.idega.block.formadmin.presentation.FormViewerBlock</component-class>
+	<component-type>SDataViewer</component-type>
+	<component-class>com.idega.block.formadmin.presentation.SDataViewer</component-class>
   </component>
 	
   <managed-bean>

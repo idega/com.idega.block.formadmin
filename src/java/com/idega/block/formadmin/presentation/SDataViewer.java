@@ -10,7 +10,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 
 import com.idega.block.formadmin.presentation.components.GridHtmlDataTable;
-import com.idega.block.formreader.presentation.SDataPreview;
+import com.idega.block.formpreview.presentation.SDataPreview;
 import com.idega.webface.WFBlock;
 import com.idega.webface.WFContainer;
 

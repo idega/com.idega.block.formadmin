@@ -65,6 +65,20 @@
 	left: 0;
 	margin-left: 220px;
 	border-left-width: 1px;
+	position: absolute;
+	right: 0 !important;
+	width: auto !important;
+}
+
+.table2_container_formadmin table{
+	width: 100% !important;
+	right: 0 !important;
+}
+
+.table2_container_formadmin table th{
+	position: absolute;
+	width: 100% !important;
+	right: 0 !important;
 }
 
 body#formbuilder div.wf_block.form_viewer_block_formadmin .wf_titlebar {

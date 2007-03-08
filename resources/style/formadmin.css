@@ -66,3 +66,22 @@
 	margin-left: 220px;
 	border-left-width: 1px;
 }
+
+body#formbuilder div.wf_block.form_viewer_block_formadmin .wf_titlebar {
+	display: none;
+}
+
+.table1_container_formadmin, .table2_container_formadmin {
+	/*background: #fef9eb;*/
+	background: #F7F3E5;
+}
+
+.table1_container_formadmin table, .table2_container_formadmin table {
+	/*background: #fef9eb;*/
+	background: #F7F3E5;
+}
+
+.table1_container_formadmin table th, .table2_container_formadmin table th {
+	background: #daf0ca !important;
+	border: 1px solid #bfe6a7;
+}

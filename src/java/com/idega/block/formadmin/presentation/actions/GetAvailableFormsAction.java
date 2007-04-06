@@ -1,18 +1,13 @@
 package com.idega.block.formadmin.presentation.actions;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.faces.model.SelectItem;
-import com.idega.block.form.business.FormsService;
+
 import com.idega.block.formadmin.presentation.components.ISelectedRowProvider;
-import com.idega.business.IBOLookup;
-import com.idega.business.IBOLookupException;
-import com.idega.idegaweb.IWApplicationContext;
-import com.idega.idegaweb.IWMainApplication;
+import com.idega.documentmanager.business.PersistenceManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
@@ -20,7 +15,7 @@ import com.idega.idegaweb.IWMainApplication;
  */
 public class GetAvailableFormsAction implements ActionListener, ISelectedRowProvider {
 	
-	private static final Logger log = Logger.getLogger(GetAvailableFormsAction.class.getName());
+	private PersistenceManager persistence_manager;
 	
 	private String selected_row;
 	List<String> col_props;
@@ -30,13 +25,7 @@ public class GetAvailableFormsAction implements ActionListener, ISelectedRowProv
 	public static final String COLUMNID_FORM_NAME = "label";
 	
 	public List getAvailableForms() {	
-		List<SelectItem> forms = null;
-		try {
-			forms = getFormsService().getForms();
-		}
-		catch (RemoteException e) {
-			log.warning("Error getting available forms");
-		}
+		List<SelectItem> forms = getPersistenceManager().getForms();
 		
 		return forms == null ? new ArrayList<SelectItem>() : forms;
 	}
@@ -51,18 +40,6 @@ public class GetAvailableFormsAction implements ActionListener, ISelectedRowProv
 		return col_props;
 	}
 	
-	private FormsService getFormsService() {
-		FormsService service = null;
-		try {
-			IWApplicationContext iwc = IWMainApplication.getDefaultIWApplicationContext();
-			service = (FormsService) IBOLookup.getServiceInstance(iwc, FormsService.class);
-		}
-		catch (IBOLookupException e) {
-			log.severe("Could not find FormsService");
-		}
-		return service;
-	}
-	
 	public ISelectedRowProvider getSelectedRowProvider() {
 		return this;
 	}
@@ -73,5 +50,14 @@ public class GetAvailableFormsAction implements ActionListener, ISelectedRowProv
 	
 	public String getSelectedRow() {
 		return selected_row;
+	}
+	
+	private PersistenceManager getPersistenceManager() {
+		
+		return persistence_manager;
+	}
+	
+	public void setPersistenceManager(PersistenceManager persistence_manager) {
+		this.persistence_manager = persistence_manager;
 	}
 }

@@ -8,12 +8,9 @@ import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
-import com.idega.block.form.business.FormsService;
+
 import com.idega.block.formadmin.presentation.components.ISelectedRowProvider;
-import com.idega.business.IBOLookup;
-import com.idega.business.IBOLookupException;
-import com.idega.idegaweb.IWApplicationContext;
-import com.idega.presentation.IWContext;
+import com.idega.documentmanager.business.PersistenceManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
@@ -22,6 +19,8 @@ import com.idega.presentation.IWContext;
 public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowProvider {
 	
 	private static final Logger log = Logger.getLogger(ViewAllSubmittedDataAction.class.getName());
+	
+	private PersistenceManager persistence_manager;
 
 	public static final String COLUMNID_LABEL1 = "label1";
 	public static final String COLUMNID_LABEL2 = "label2";
@@ -46,7 +45,7 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 		if(available_forms_action != null && available_forms_action.getSelectedRow() != null) {
 			
 			try {
-				submitted_data_names = getFormsService(ctx).listSubmittedData(available_forms_action.getSelectedRow());
+				submitted_data_names = getPersistenceManager().listSubmittedData(available_forms_action.getSelectedRow());
 			} catch (Exception e) {
 				log.warning("Error getting submitted data list");
 				e.printStackTrace();
@@ -66,18 +65,6 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 			col_props.add(COLUMNID_LABEL2);
 		}
 		return col_props;
-	}
-	
-	private FormsService getFormsService(FacesContext context) {
-		FormsService service = null;
-		try {
-			IWApplicationContext iwc = IWContext.getIWContext(context);
-			service = (FormsService) IBOLookup.getServiceInstance(iwc, FormsService.class);
-		}
-		catch (IBOLookupException e) {
-			log.warning("Could not find FormsService");
-		}
-		return service;
 	}
 	
 	public ISelectedRowProvider getSelectedRowProvider() {
@@ -125,5 +112,14 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 		return available_forms_action != null && 
 			available_forms_action.getSelectedRow() != null &&
 			getSelectedRow() != null;
+	}
+	
+	private PersistenceManager getPersistenceManager() {
+		
+		return persistence_manager;
+	}
+	
+	public void setPersistenceManager(PersistenceManager persistence_manager) {
+		this.persistence_manager = persistence_manager;
 	}
 }

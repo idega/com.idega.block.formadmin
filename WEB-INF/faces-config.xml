@@ -14,10 +14,18 @@
   	<managed-bean-name>availableFormsAction</managed-bean-name>
     <managed-bean-class>com.idega.block.formadmin.presentation.actions.GetAvailableFormsAction</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
+    <managed-property>
+		<property-name>persistenceManager</property-name>
+		<value>#{persistenceManager}</value>
+	</managed-property>
   </managed-bean>
   <managed-bean>
   	<managed-bean-name>allSubmittedDataAction</managed-bean-name>
     <managed-bean-class>com.idega.block.formadmin.presentation.actions.ViewAllSubmittedDataAction</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
+    <managed-property>
+	  	<property-name>persistenceManager</property-name>
+	    <value>#{persistenceManager}</value>
+	</managed-property>
   </managed-bean>
 </faces-config>

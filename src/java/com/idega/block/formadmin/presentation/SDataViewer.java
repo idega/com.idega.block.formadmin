@@ -24,7 +24,7 @@ public class SDataViewer extends WFBlock {
 	private static final String FORM_RENDERER_CONTAINER = "FORM_RENDERER_CONTAINER";
 
 	public SDataViewer() {
-		super("SDataViewer");
+		super();
 	}
 	
 	private static final String FORM_ADMIN_STYLE_CLASS_ID = "_formadmin";

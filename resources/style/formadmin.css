@@ -9,6 +9,7 @@
 .sp_table_formadmin {
 	width: 200px;
 }
+
 .sp_table2_formadmin {
 	width: 100%;
 }
@@ -23,9 +24,10 @@
 }
 
 .sp_table_formadmin td, .sp_table2_formadmin td {
-	
 	padding-right: 5px;
 	padding-left: 5px;
+	padding: 4px 6px;
+	font-size: 12px !important;
 }
 
 .grid_value_container {
@@ -34,13 +36,21 @@
 
 .form_viewer_block_formadmin {
 	overflow: auto;
-	max-height: 500px;
+	width: auto;
+	height: auto;
+	position: absolute;
+	top: 86px;
+	left: 20px;
+	right: 20px;
+	bottom: 20px;
+	border-color: #a1a1a1;
 }
 
 .tables_container_formadmin {
 	background-color: #FAFAFA;
-	overflow: none;
+	overflow: nonde;
 }
+
 .tables_container_formadmin, .table1_container_formadmin, .table2_container_formadmin {
 	height: 200px;
 }
@@ -50,38 +60,35 @@
 	overflow: auto;
 	top: 50;
 	position: absolute;
-	border-color: #D7D7D7;
+	border-color: #a1a1a1;
 	border-style: solid;
 	border-width: 0px;
 	background-color: white;
 	border-bottom-width: 1px;
 }
+
 .table1_container_formadmin {
 	left: 0;
 	border-right-width: 1px;
+	overflow: scroll;
 }
 
 .table2_container_formadmin {
-	left: 0;
-	margin-left: 220px;
-	border-left-width: 1px;
-position: absolute;
-right: 0 !important;
-width: auto !important;
+	left: 216px;
+	border-left-width: 0px;
+	position: absolute;
+	right: 0 !important;
+	width: auto !important;
+	overflow: scroll;
 }
 
 .table2_container_formadmin table{
-width: 100% !important;
-right: 0 !important;
+	width: 100% !important;
+	right: 0 !important;
 }
 
 .table2_container_formadmin table th{
-position: absolute;
-width: 100% !important;
-right: 0 !important;
 }
-
-
 
 body#formbuilder div.wf_block.form_viewer_block_formadmin .wf_titlebar {
 	display: none;
@@ -99,7 +106,10 @@ body#formbuilder div.wf_block.form_viewer_block_formadmin .wf_titlebar {
 
 .table1_container_formadmin table th, .table2_container_formadmin table th {
 	background: #daf0ca !important;
-	border: 1px solid #bfe6a7;
+	border-bottom: 1px solid #bfe6a7;
+	padding: 4px 6px;
+	font-size: 12px;
+	text-align: left;
 }
 
 #fbAdminPage{
@@ -107,7 +117,25 @@ body#formbuilder div.wf_block.form_viewer_block_formadmin .wf_titlebar {
 	left: 0px;
 	position: absolute;
 	right: 0px;
-	bottom: 11px !important;
+	bottom: 62px !important;
 	overflow: auto !important;
 	height: auto !important;
+}
+
+fieldset.group legend {
+	display: none !important;
+	float: none !important;
+	width: 100% !important;
+	border: 1px #f00 solid;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+fieldset.group span span {
+	font-size: 12px !important;
+}
+
+fieldset.group span label {
+	width: 190px;
+	font-size: 12px !important;
 }

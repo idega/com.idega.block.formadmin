@@ -50,6 +50,8 @@ public class SDataViewer extends WFBlock {
 		GridHtmlDataTable available_forms_grid_table = new GridHtmlDataTable();
 		available_forms_grid_table.setRendered(true);
 		available_forms_grid_table.setStyleClass(table_style_class);
+		available_forms_grid_table.setCellpadding("0");
+		available_forms_grid_table.setCellspacing("0");
 		available_forms_grid_table.setRowChangeColor("#F3F7F6");
 		available_forms_grid_table.setRowSelectedColor("#F3F7F6");
 		available_forms_grid_table.setId(available_forms_table_id);
@@ -64,6 +66,8 @@ public class SDataViewer extends WFBlock {
 		submitted_data_grid_table.setRendered(true);
 		submitted_data_grid_table.setStyleClass(table2_style_class);
 		submitted_data_grid_table.setRowChangeColor("#F3F7F6");
+		submitted_data_grid_table.setCellpadding("0");
+		submitted_data_grid_table.setCellspacing("0");
 		submitted_data_grid_table.setRowSelectedColor("#F3F7F6");
 		submitted_data_grid_table.setId(submitted_data_table_id);
 		submitted_data_grid_table.setValueBinding(value_att, app.createValueBinding("#{allSubmittedDataAction.allSubmittedData}"));

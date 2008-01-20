@@ -6,16 +6,20 @@
   <parent>
   	<groupId>com.idega.block.platform</groupId>
   	<artifactId>com.idega.block.base</artifactId>
-  	<version>4.0-SNAPSHOT</version>
+  	<version>4.0.0</version>
   </parent>
   <packaging>jar</packaging>
   <groupId>com.idega.block.platform</groupId>
   <name>idegaWeb Form Admin</name>
   <artifactId>com.idega.block.formadmin</artifactId>
-  <version>4.0-SNAPSHOT</version>
+  <version>4.0.0-SNAPSHOT</version>
   <inceptionYear>2006</inceptionYear>
   <description>idegaWeb Form Admin block is a component for XForms-based forms and their submitted data reviewing</description>
   <scm>
+    <!--
+    <connection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</connection>
+    <developerConnection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</developerConnection> 
+     -->
     <connection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</connection>
     <developerConnection>scm:cvs:ext:${user.name}@code.idega.com:/idega/cvs:${groupId}/${artifactId}/</developerConnection>
   </scm>
@@ -33,18 +37,22 @@
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>com.idega.core</artifactId>
+      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>com.idega.webface</artifactId>
+      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>com.idega.block.form</artifactId>
+      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>com.idega.documentmanager</artifactId>
+      <version>4.0.0</version>
     </dependency>
   </dependencies>
 </project>

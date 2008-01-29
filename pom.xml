@@ -9,7 +9,7 @@
   <groupId>com.idega.block.platform</groupId>
   <name>idegaWeb Form Admin</name>
   <artifactId>com.idega.block.formadmin</artifactId>
-  <version>4.0.1-SNAPSHOT</version>
+  <version>4.0.1</version>
   <inceptionYear>2006</inceptionYear>
   <description>idegaWeb Form Admin block is a component for XForms-based forms and their submitted data reviewing</description>
   <scm>
@@ -19,6 +19,7 @@
      -->
     <connection>scm:cvs:ext:civilis@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.block.formadmin/</connection>
     <developerConnection>scm:cvs:ext:civilis@code.idega.com:/idega/cvs:com.idega.block.platform/com.idega.block.formadmin/</developerConnection>
+    <tag>com_idega_block_addon_super-4_0_1</tag>
   </scm>
 
   <developers>
@@ -44,12 +45,12 @@
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>com.idega.block.form</artifactId>
-      <version>4.0.1-SNAPSHOT</version>
+      <version>4.0.1</version>
     </dependency>
     <dependency>
       <groupId>com.idega.block.platform</groupId>
       <artifactId>com.idega.documentmanager</artifactId>
-      <version>4.0.1-SNAPSHOT</version>
+      <version>4.0.1</version>
     </dependency>
   </dependencies>
 </project>

@@ -44,12 +44,14 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 		
 		if(available_forms_action != null && available_forms_action.getSelectedRow() != null) {
 			
+			/* TODO: impl 
 			try {
 				submitted_data_names = getPersistenceManager().listSubmittedData(available_forms_action.getSelectedRow());
 			} catch (Exception e) {
 				log.warning("Error getting submitted data list");
 				e.printStackTrace();
 			}
+			*/
 		}
 		
 		return submitted_data_names == null ? new ArrayList() : submitted_data_names;

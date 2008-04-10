@@ -2,16 +2,20 @@ package com.idega.block.formadmin.presentation.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.faces.model.SelectItem;
 
 import com.idega.block.formadmin.presentation.components.ISelectedRowProvider;
+import com.idega.documentmanager.business.PersistedForm;
 import com.idega.documentmanager.business.PersistenceManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version 1.0
+ * @version $Revision: 1.12 $
+ * 
+ * Last modified: $Date: 2008/04/10 01:06:33 $ by $Author: civilis $
  */
 public class GetAvailableFormsAction implements ActionListener, ISelectedRowProvider {
 	
@@ -24,10 +28,20 @@ public class GetAvailableFormsAction implements ActionListener, ISelectedRowProv
 	
 	public static final String COLUMNID_FORM_NAME = "label";
 	
-	public List getAvailableForms() {	
-		List<SelectItem> forms = getPersistenceManager().getForms();
+	public List<SelectItem> getAvailableForms() {
 		
-		return forms == null ? new ArrayList<SelectItem>() : forms;
+		List<PersistedForm> forms = getPersistenceManager().getStandaloneForms();
+		ArrayList<SelectItem> items = new ArrayList<SelectItem>(forms.size());
+		
+		for (PersistedForm persistedForm : forms) {
+			
+			SelectItem item = new SelectItem();
+			item.setLabel(persistedForm.getDisplayName());
+			item.setValue(persistedForm.getFormId().toString());
+			items.add(item);
+		}
+		
+		return items;
 	}
 	
 	public List<String> getTableColumnsProperties() {

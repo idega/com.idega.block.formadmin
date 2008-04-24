@@ -3,7 +3,6 @@ package com.idega.block.formadmin.presentation.actions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -18,9 +17,9 @@ import com.idega.documentmanager.business.PersistenceManager;
  */
 public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowProvider {
 	
-	private static final Logger log = Logger.getLogger(ViewAllSubmittedDataAction.class.getName());
+	//private static final Logger log = Logger.getLogger(ViewAllSubmittedDataAction.class.getName());
 	
-	private PersistenceManager persistence_manager;
+	//private PersistenceManager persistence_manager;
 
 	public static final String COLUMNID_LABEL1 = "label1";
 	public static final String COLUMNID_LABEL2 = "label2";
@@ -116,12 +115,11 @@ public class ViewAllSubmittedDataAction implements ActionListener, ISelectedRowP
 			getSelectedRow() != null;
 	}
 	
-	private PersistenceManager getPersistenceManager() {
-		
+	/*private PersistenceManager getPersistenceManager() {
 		return persistence_manager;
-	}
+	}*/
 	
 	public void setPersistenceManager(PersistenceManager persistence_manager) {
-		this.persistence_manager = persistence_manager;
+		//this.persistence_manager = persistence_manager;
 	}
 }

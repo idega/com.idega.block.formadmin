@@ -8,14 +8,14 @@ import javax.faces.event.ActionListener;
 import javax.faces.model.SelectItem;
 
 import com.idega.block.formadmin.presentation.components.ISelectedRowProvider;
-import com.idega.documentmanager.business.PersistedForm;
+import com.idega.documentmanager.business.Form;
 import com.idega.documentmanager.business.PersistenceManager;
 
 /**
  * @author <a href="mailto:civilis@idega.com">Vytautas Čivilis</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  * 
- * Last modified: $Date: 2008/04/10 01:06:33 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/27 20:20:26 $ by $Author: civilis $
  */
 public class GetAvailableFormsAction implements ActionListener, ISelectedRowProvider {
 	
@@ -30,10 +30,10 @@ public class GetAvailableFormsAction implements ActionListener, ISelectedRowProv
 	
 	public List<SelectItem> getAvailableForms() {
 		
-		List<PersistedForm> forms = getPersistenceManager().getStandaloneForms();
+		List<Form> forms = getPersistenceManager().getStandaloneForms();
 		ArrayList<SelectItem> items = new ArrayList<SelectItem>(forms.size());
 		
-		for (PersistedForm persistedForm : forms) {
+		for (Form persistedForm : forms) {
 			
 			SelectItem item = new SelectItem();
 			item.setLabel(persistedForm.getDisplayName());
